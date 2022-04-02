@@ -23,12 +23,13 @@ const serveHttp = async (conn: Deno.Conn) => {
   }
 };
 
-const PORT = parseInt(Deno.env.get("PORT") ?? "8080");
+const env = Deno.env.toObject();
+
+// const PORT = parseInt(Deno.env.get("PORT") ?? "8080");
+const PORT = parseInt(env.PORT ?? "8080");
 const server = Deno.listen({ port: PORT });
 
-console.log(
-  `HTTP webserver running.  Access it at:  http://localhost:${PORT}/`
-);
+console.log(`HTTP webserver running. Access it at: http://localhost:${PORT}`);
 
 // Connections to the server will be yielded up as an async iterable
 for await (const conn of server) {
