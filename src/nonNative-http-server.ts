@@ -7,7 +7,9 @@ const serveHttp = async (conn: Deno.Conn) => {
   // Each request sent over the HTTP connection will be yielded as an async
   // iterator from the HTTP connection
   for await (const requestEvent of httpConn) {
-    console.log("handling request event");
+    console.log(
+      `handling request event - ${requestEvent.request.method} ${requestEvent.request.url}`
+    );
 
     // The native HTTP server uses the web standard `Request` and `Response` objects
     const body = `Your user-agent is:\n\n${
