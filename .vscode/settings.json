@@ -6,6 +6,14 @@
 		"editor.defaultFormatter": "dprint.dprint",
 		"editor.formatOnSave": true
 	},
+	"[json]": {
+		"editor.defaultFormatter": "dprint.dprint",
+		"editor.formatOnSave": true
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "dprint.dprint",
+		"editor.formatOnSave": true
+	},
 	"[typescript]": {
 		"editor.defaultFormatter": "dprint.dprint",
 		"editor.formatOnSave": true
