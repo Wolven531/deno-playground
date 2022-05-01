@@ -1,5 +1,17 @@
 {
-  "deno.enable": true,
-  "deno.lint": true,
-  "deno.unstable": true
+	"deno.enable": true,
+	"deno.lint": true,
+	"deno.unstable": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "dprint.dprint",
+		"editor.formatOnSave": true
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "dprint.dprint",
+		"editor.formatOnSave": true
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "dprint.dprint",
+		"editor.formatOnSave": true
+	}
 }
