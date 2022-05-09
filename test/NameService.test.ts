@@ -1,4 +1,4 @@
-import { assertExists, fail } from "https://deno.land/std/testing/asserts.ts";
+import { assertExists, fail } from "https://deno.land/std@0.138.0/testing/asserts.ts";
 // import * as assertions from "https://deno.land/std/testing/asserts.ts";
 import { INameService, NameServiceFactory } from "../src/NameService.ts";
 
