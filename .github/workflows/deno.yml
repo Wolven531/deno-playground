@@ -39,6 +39,6 @@ jobs:
         run: deno lint
 
       - name: Run tests + print coverage
-        run:
+        script:
           - deno test --allow-env --config ./deno.jsonc --jobs --coverage=./coverage ./test
           - deno coverage ./coverage
