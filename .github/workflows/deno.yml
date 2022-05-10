@@ -41,11 +41,14 @@ jobs:
       - name: Run tests
         run: deno test --allow-env --config ./deno.jsonc --jobs --coverage=./coverage ./test
 
-      - name: Show test coverage
-        run: deno coverage ./coverage
+      - name: Generate test coverage
+        run: deno coverage ./coverage --lcov > ./coverage/lcov.info
 
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-report
-          path: coverage
+      - name: Code Coverage Report
+        uses: romeovs/lcov-reporter-action@v0.2.11
+
+      # - name: Archive code coverage results
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: code-coverage-report
+      #     path: coverage
