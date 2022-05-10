@@ -1,8 +1,11 @@
-import { GraphQLHTTP } from 'https://deno.land/x/gql@1.1.1/mod.ts';
-import { makeExecutableSchema } from 'https://deno.land/x/graphql_tools@0.0.2/mod.ts';
-import { gql } from 'https://deno.land/x/graphql_tag@0.0.1/mod.ts';
+// import { GraphQLHTTP } from 'https://deno.land/x/gql@1.1.1/mod.ts';
+// import { makeExecutableSchema } from 'https://deno.land/x/graphql_tools@0.0.2/mod.ts';
+// import { gql } from 'https://deno.land/x/graphql_tag@0.0.1/mod.ts';
+import * as Gql from 'https://deno.land/x/gql@1.1.1/mod.ts';
+import * as GqlTag from 'https://deno.land/x/graphql_tag@0.0.1/mod.ts';
+import * as GqlTools from 'https://deno.land/x/graphql_tools@0.0.2/mod.ts';
 
-const typeDefs = gql`
+const typeDefs = GqlTag.gql`
 	type Query {
 		hello: String
 	}
@@ -29,8 +32,8 @@ export const httpRequestHandler = (request: Request): Promise<Response> => {
 };
 
 const gqlHandler = (request: Request): Promise<Response> => {
-	return GraphQLHTTP<Request>({
+	return Gql.GraphQLHTTP<Request>({
 		graphiql: true,
-		schema: makeExecutableSchema({ resolvers, typeDefs }),
+		schema: GqlTools.makeExecutableSchema({ resolvers, typeDefs }),
 	})(request);
 };
