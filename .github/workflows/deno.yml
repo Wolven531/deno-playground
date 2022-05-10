@@ -38,7 +38,14 @@ jobs:
       - name: Run linter
         run: deno lint
 
-      - name: Run tests + print coverage
-        script:
-          - deno test --allow-env --config ./deno.jsonc --jobs --coverage=./coverage ./test
-          - deno coverage ./coverage
+      - name: Run tests
+        run: deno test --allow-env --config ./deno.jsonc --jobs --coverage=./coverage ./test
+
+      - name: Show test coverage
+        run: deno coverage ./coverage
+
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: coverage
