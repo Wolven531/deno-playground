@@ -18,9 +18,10 @@ const resolvers = { Query: { hello: () => `Hello World!` } };
 
 export const httpRequestHandler = (request: Request): Promise<Response> => {
 	countSvc.addToCount();
+	const reqNum = countSvc.getCount();
 
 	console.log(
-		`handling request event #${countSvc.count} - ${request.method} ${request.url}`,
+		`handling request event #${reqNum} - ${request.method} ${request.url}`,
 	);
 
 	const { pathname } = new URL(request.url);
@@ -29,7 +30,7 @@ export const httpRequestHandler = (request: Request): Promise<Response> => {
 		return gqlHandler(request);
 	}
 
-	const responseBody = `Req #${countSvc.count}: Your user-agent is:\n\n`
+	const responseBody = `Req #${reqNum}: Your user-agent is:\n\n`
 		.concat(
 			request.headers.get('user-agent') ?? 'Unknown',
 		);

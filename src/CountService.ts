@@ -5,7 +5,7 @@ export interface ICountService {
 	 * @param {number | undefined} incrementAmount Optional amount to increase count by (default = 1)
 	 */
 	addToCount: (incrementAmount?: number) => void;
-	count: number;
+	getCount: () => number;
 }
 
 /**
@@ -22,6 +22,6 @@ export const CountServiceFactory: (startingCount?: number) => ICountService = (
 		addToCount: (incrementAmount = 1) => {
 			count += incrementAmount;
 		},
-		count,
+		getCount: () => count,
 	};
 };
