@@ -5,11 +5,6 @@ import { GraphQLHTTP } from './http.ts';
 
 const countSvc = CountServiceFactory();
 
-// const typeDefs = GqlTag.gql`
-// 	type Query {
-// 		hello: String
-// 	}
-// `;
 const typeDefs = gql`
 	type Query {
 		hello: String
@@ -20,7 +15,6 @@ const resolvers = { Query: { hello: () => `Hello World!` } };
 
 const gqlMiddleware = await GraphQLHTTP<Request>({
 	graphiql: true,
-	// schema: GqlTools.makeExecutableSchema({ resolvers, typeDefs }),
 	schema: makeExecutableSchema({ resolvers, typeDefs }),
 });
 
@@ -49,6 +43,5 @@ export const httpRequestHandler = (request: Request): Promise<Response> => {
 };
 
 const gqlHandler = (request: Request): Promise<Response> => {
-	// return Gql.GraphQLHTTP<Request>({
 	return gqlMiddleware(request);
 };
