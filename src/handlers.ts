@@ -1,6 +1,20 @@
 import { GraphQLHTTP } from "https://deno.land/x/gql@1.1.1/http.ts";
+// import {
+// 	graphql,
+// 	GraphQLSchema,
+// 	GraphQLObjectType,
+// 	GraphQLString,
+//   }  from "https://raw.githubusercontent.com/adelsz/graphql-deno/v15.0.0/mod.ts";
+// import {
+// 	gql,
+// 	graphqlHttp,
+// 	makeExecutableSchema,
+//   } from "https://deno.land/x/deno_graphql/oak.ts";
+
 import { gql } from "https://deno.land/x/graphql_tag@0.0.1/mod.ts";
+// import { makeExecutableSchema } from "https://deno.land/x/deno_graphql@v0.2.2/mod.ts";
 import { makeExecutableSchema } from "https://deno.land/x/graphql_tools@0.0.2/schema/makeExecutableSchema.ts";
+
 // import * as Gql from 'https://deno.land/x/gql@1.1.1/mod.ts';
 // import * as GqlTag from 'https://deno.land/x/graphql_tag@0.0.1/mod.ts';
 // import * as GqlTools from 'https://deno.land/x/graphql_tools@0.0.2/mod.ts';
@@ -20,6 +34,12 @@ const typeDefs = gql`
 `;
 
 const resolvers = { Query: { hello: () => `Hello World!` } };
+
+const gqlMiddleware = await GraphQLHTTP<Request>({
+	graphiql: true,
+	// schema: GqlTools.makeExecutableSchema({ resolvers, typeDefs }),
+	schema: makeExecutableSchema({ resolvers, typeDefs }),
+});
 
 export const httpRequestHandler = (request: Request): Promise<Response> => {
 	countSvc.addToCount();
@@ -47,9 +67,5 @@ export const httpRequestHandler = (request: Request): Promise<Response> => {
 
 const gqlHandler = (request: Request): Promise<Response> => {
 	// return Gql.GraphQLHTTP<Request>({
-	return GraphQLHTTP<Request>({
-		graphiql: true,
-		// schema: GqlTools.makeExecutableSchema({ resolvers, typeDefs }),
-		schema: makeExecutableSchema({ resolvers, typeDefs }),
-	})(request);
+	return gqlMiddleware(request);
 };
