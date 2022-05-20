@@ -1,19 +1,30 @@
-import { assertExists, fail } from "https://deno.land/std@0.138.0/testing/asserts.ts";
-// import * as assertions from "https://deno.land/std/testing/asserts.ts";
-// import { INameService, NameServiceFactory } from "../src/NameService.ts";
-import * as NameService from "../src/NameService.ts";
+import { assertEquals, assertExists, fail } from "https://deno.land/std@0.138.0/testing/asserts.ts";
+import { INameService, NameServiceFactory } from "../src/NameService.ts";
 
-Deno.test({
-	name: "execute w/ default ctor",
-	fn(): void {
-		let svc: NameService.INameService;
+Deno.test("execute w/ default ctor", () => {
+	let svc: INameService;
 
-		try {
-			svc = NameService.NameServiceFactory();
-		} catch (err: any) {
-			fail("ctor should not throw error");
-		}
+	try {
+		svc = NameServiceFactory();
+	} catch (err: any) {
+		fail("ctor should not throw error");
+	}
 
-		assertExists(svc, "ctor should return an instance");
-	},
+	assertExists(svc, "ctor returns an instance");
+});
+
+Deno.test("execute w/ starting value", () => {
+	const startingValue = "charmander";
+	const svc = NameServiceFactory(startingValue);
+
+	assertEquals(svc.getName(), startingValue, "getName() returns starting value");
+});
+
+Deno.test("setName()", () => {
+	const updatedValue = "charmeleon";
+	const svc = NameServiceFactory("charmander");
+
+	svc.setName(updatedValue);
+
+	assertEquals(svc.getName(), updatedValue, "getName() returns updated value");
 });
