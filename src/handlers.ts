@@ -1,4 +1,4 @@
-import { GraphQLHTTP } from "https://deno.land/x/gql@1.1.1/http.ts";
+import { GraphQLHTTP } from 'https://deno.land/x/gql@1.1.1/http.ts';
 // import {
 // 	graphql,
 // 	GraphQLSchema,
@@ -11,14 +11,14 @@ import { GraphQLHTTP } from "https://deno.land/x/gql@1.1.1/http.ts";
 // 	makeExecutableSchema,
 //   } from "https://deno.land/x/deno_graphql/oak.ts";
 
-import { gql } from "https://deno.land/x/graphql_tag@0.0.1/mod.ts";
+import { gql } from 'https://deno.land/x/graphql_tag@0.0.1/mod.ts';
 // import { makeExecutableSchema } from "https://deno.land/x/deno_graphql@v0.2.2/mod.ts";
-import { makeExecutableSchema } from "https://deno.land/x/graphql_tools@0.0.2/schema/makeExecutableSchema.ts";
+import { makeExecutableSchema } from 'https://deno.land/x/graphql_tools@0.0.2/schema/makeExecutableSchema.ts';
 
 // import * as Gql from 'https://deno.land/x/gql@1.1.1/mod.ts';
 // import * as GqlTag from 'https://deno.land/x/graphql_tag@0.0.1/mod.ts';
 // import * as GqlTools from 'https://deno.land/x/graphql_tools@0.0.2/mod.ts';
-import { CountServiceFactory } from "./CountService.ts";
+import { CountServiceFactory } from './CountService.ts';
 
 const countSvc = CountServiceFactory();
 
@@ -51,13 +51,13 @@ export const httpRequestHandler = (request: Request): Promise<Response> => {
 
 	const { pathname } = new URL(request.url);
 
-	if (pathname === "/graphql") {
+	if (pathname === '/graphql') {
 		return gqlHandler(request);
 	}
 
 	const responseBody = `Req #${reqNum}: Your user-agent is:\n\n`
 		.concat(
-			request.headers.get("user-agent") ?? "Unknown",
+			request.headers.get('user-agent') ?? 'Unknown',
 		);
 
 	const response = new Response(responseBody, { status: 200 });
