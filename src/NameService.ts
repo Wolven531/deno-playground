@@ -17,8 +17,10 @@ export interface INameService {
  *
  * @param {string | undefined} startingName Optional value w/ which to start the instance
  */
-export const NameServiceFactory: (startingName?: string) => INameService = (startingName) => {
-	let currentName = startingName ?? "";
+export const NameServiceFactory: (startingName?: string) => INameService = (
+	startingName,
+) => {
+	let currentName = startingName ?? '';
 
 	return {
 		getName: () => currentName,
