@@ -33,6 +33,9 @@ export const httpRequestHandler = (request: Request): Promise<Response> => {
 	}
 
 	if (pathname === '/' && request.method === 'GET') {
+		const headers = new Headers();
+		headers.set('content-type', 'text/html');
+
 		const response = new Response(
 			`
 	<!DOCTYPE html>
@@ -46,7 +49,7 @@ export const httpRequestHandler = (request: Request): Promise<Response> => {
 		</body>
 	</html>
 	`,
-			{ status: 200 },
+			{ headers, status: 200 },
 		);
 
 		return Promise.resolve(response);
