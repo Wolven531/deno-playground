@@ -2,24 +2,14 @@
 	"deno.enable": true,
 	"deno.lint": true,
 	"deno.unstable": true,
-	"[javascript]": {
-		"editor.defaultFormatter": "dprint.dprint",
-		"editor.formatOnSave": true
-	},
+	"editor.defaultFormatter": "denoland.vscode-deno",
+	"editor.formatOnPaste": true,
+	"editor.formatOnSave": true,
+	"workbench.editor.highlightModifiedTabs": true,
 	"[json]": {
-		"editor.defaultFormatter": "dprint.dprint",
-		"editor.formatOnSave": true
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[jsonc]": {
-		"editor.defaultFormatter": "dprint.dprint",
-		"editor.formatOnSave": true
-	},
-	"[typescript]": {
-		"editor.defaultFormatter": "dprint.dprint",
-		"editor.formatOnSave": true
-	},
-	"[typescriptreact]": {
-		"editor.defaultFormatter": "dprint.dprint",
-		"editor.formatOnSave": true
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	}
 }

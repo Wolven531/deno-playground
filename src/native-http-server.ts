@@ -1,4 +1,4 @@
-import { serve } from 'https://deno.land/std@0.133.0/http/server.ts';
+import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
 
 console.log('Hello, Deno!');
 
@@ -14,7 +14,6 @@ const handler = (request: Request): Response => {
 
 const env = Deno.env.toObject();
 
-// const PORT = parseInt(Deno.env.get("PORT") ?? "8080");
 const PORT = parseInt(env.PORT ?? '8080');
 
 console.log(`Starting HTTP webserver; access it at: http://localhost:${PORT}`);

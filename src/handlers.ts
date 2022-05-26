@@ -32,10 +32,32 @@ export const httpRequestHandler = (request: Request): Promise<Response> => {
 		return gqlHandler(request);
 	}
 
-	const responseBody = `Req #${reqNum}: Your user-agent is:\n\n`
-		.concat(
-			request.headers.get('user-agent') ?? 'Unknown',
+	if (pathname === '/' && request.method === 'GET') {
+		const headers = new Headers();
+		headers.set('content-type', 'text/html');
+
+		const response = new Response(
+			`
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>Anthony&apos;s Deno World</title>
+		</head>
+		<body>
+			<h1>Welcome!</h1>
+			<a href="/graphql" target="_self" re>GraphQL Playground</a>
+		</body>
+	</html>
+	`,
+			{ headers, status: 200 },
 		);
+
+		return Promise.resolve(response);
+	}
+
+	const responseBody = `Req #${reqNum}: Your user-agent is:\n\n`.concat(
+		request.headers.get('user-agent') ?? 'Unknown',
+	);
 
 	const response = new Response(responseBody, { status: 200 });
 
