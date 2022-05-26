@@ -1,0 +1,7 @@
+{
+	"indentWidth": 4,
+	"lineWidth": 80,
+	"proseWrap": "preserve",
+	"singleQuote": true,
+	"useTabs": true
+}
