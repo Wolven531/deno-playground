@@ -3,19 +3,17 @@
 	"compilerOptions": {
 		// "allowJs": true,
 		// "lib": [
-		//   //   "deno.window"
-		//   "deno.ns",
-		//   "dom",
-		// //   "DOM.Iterable"
-		//   //   "dom.asynciterable"
+		// 	"dom",
+		// 	// "dom.iterable",
+		// 	// "dom.asynciterable",
+		// 	// "es2018.asynciterable",
+		// 	"deno.net",
+		// 	"deno.ns",
+		// 	"deno.shared_globals",
+		// 	"deno.web",
+		// 	"deno.window",
+		// 	"esnext.asynciterable"
 		// ],
-		"lib": [
-			"dom",
-			//   "dom.iterable",
-			//  "dom.asynciterable",
-			"es2018.asynciterable",
-			"deno.ns"
-		],
 		"strict": true
 		// "jsx": "react",
 		// "jsxFactory": "React.createElement",
@@ -29,7 +27,7 @@
 	//   },
 	"lint": {
 		"files": {
-			"include": ["src/"],
+			"include": ["src/","test/"],
 			"exclude": ["src/testdata/"]
 		},
 		"rules": {
@@ -40,7 +38,7 @@
 	},
 	"fmt": {
 		"files": {
-			"include": ["src/"],
+			"include": ["src/","test/"],
 			"exclude": ["src/testdata/"]
 		},
 		"options": {
