@@ -2,8 +2,14 @@
 	"deno.enable": true,
 	"deno.lint": true,
 	"deno.unstable": true,
-	"[javascript,json,jsonc,typescript]": {
-		"editor.defaultFormatter": "denoland.vscode-deno",
-		"editor.formatOnSave": true
+	"editor.defaultFormatter": "denoland.vscode-deno",
+	"editor.formatOnPaste": true,
+	"editor.formatOnSave": true,
+	"workbench.editor.highlightModifiedTabs": true,
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	}
 }
