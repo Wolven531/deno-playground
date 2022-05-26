@@ -2,24 +2,8 @@
 	"deno.enable": true,
 	"deno.lint": true,
 	"deno.unstable": true,
-	"[javascript]": {
-		"editor.defaultFormatter": "dprint.dprint",
-		"editor.formatOnSave": true
-	},
-	"[json]": {
-		"editor.defaultFormatter": "dprint.dprint",
-		"editor.formatOnSave": true
-	},
-	"[jsonc]": {
-		"editor.defaultFormatter": "dprint.dprint",
-		"editor.formatOnSave": true
-	},
-	"[typescript]": {
-		"editor.defaultFormatter": "dprint.dprint",
-		"editor.formatOnSave": true
-	},
-	"[typescriptreact]": {
-		"editor.defaultFormatter": "dprint.dprint",
+	"[javascript,json,jsonc,typescript]": {
+		"editor.defaultFormatter": "denoland.vscode-deno",
 		"editor.formatOnSave": true
 	}
 }
