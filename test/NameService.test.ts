@@ -10,7 +10,7 @@ Deno.test('execute w/ default ctor', () => {
 
 	try {
 		svc = NameServiceFactory();
-	} catch (err: any) {
+	} catch (err: unknown) {
 		fail('ctor should not throw error');
 	}
 

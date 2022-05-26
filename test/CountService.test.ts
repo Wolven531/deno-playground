@@ -12,7 +12,7 @@ Deno.test({
 
 		try {
 			svc = CountServiceFactory();
-		} catch (err: any) {
+		} catch (err: unknown) {
 			fail('ctor should not throw error');
 		}
 
