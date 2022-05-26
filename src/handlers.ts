@@ -55,10 +55,9 @@ export const httpRequestHandler = (request: Request): Promise<Response> => {
 		return Promise.resolve(response);
 	}
 
-	const responseBody = `Req #${reqNum}: Your user-agent is:\n\n`
-		.concat(
-			request.headers.get('user-agent') ?? 'Unknown',
-		);
+	const responseBody = `Req #${reqNum}: Your user-agent is:\n\n`.concat(
+		request.headers.get('user-agent') ?? 'Unknown',
+	);
 
 	const response = new Response(responseBody, { status: 200 });
 

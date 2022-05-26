@@ -2,7 +2,7 @@ import {
 	assertEquals,
 	assertExists,
 	fail,
-} from 'https://deno.land/std@0.138.0/testing/asserts.ts';
+} from 'https://deno.land/std@0.140.0/testing/asserts.ts';
 import { INameService, NameServiceFactory } from '../src/NameService.ts';
 
 Deno.test('execute w/ default ctor', () => {

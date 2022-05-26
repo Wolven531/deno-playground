@@ -1,4 +1,4 @@
-// import { readAll } from "https://deno.land/std@0.138.0/streams/conversion.ts";
+// import { readAll } from "https://deno.land/std@0.140.0/streams/conversion.ts";
 
 const input = prompt("Please enter your name\n");
 

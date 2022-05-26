@@ -2,18 +2,16 @@ import {
 	assertEquals,
 	assertExists,
 	fail,
-} from 'https://deno.land/std@0.138.0/testing/asserts.ts';
-// import * as assertions from "https://deno.land/std/testing/asserts.ts";
-// import { ICountService, CountServiceFactory } from "../src/CountService.ts";
-import * as CountService from '../src/CountService.ts';
+} from 'https://deno.land/std@0.140.0/testing/asserts.ts';
+import { CountServiceFactory, ICountService } from '../src/CountService.ts';
 
 Deno.test({
 	name: 'execute w/ default ctor',
 	fn(): void {
-		let svc: CountService.ICountService;
+		let svc: ICountService;
 
 		try {
-			svc = CountService.CountServiceFactory();
+			svc = CountServiceFactory();
 		} catch (err: any) {
 			fail('ctor should not throw error');
 		}
@@ -25,9 +23,7 @@ Deno.test({
 Deno.test({
 	name: 'addToCount() increases count',
 	fn(): void {
-		let svc: CountService.ICountService;
-
-		svc = CountService.CountServiceFactory();
+		const svc: ICountService = CountServiceFactory();
 
 		assertEquals(svc.getCount(), 0, 'count should be zero');
 
