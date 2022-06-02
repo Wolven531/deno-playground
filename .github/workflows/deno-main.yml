@@ -6,12 +6,10 @@
 # This workflow will install Deno then run Deno lint and test.
 # For more information see: https://github.com/denoland/setup-deno
 
-name: Deno Lint and Test
+name: Deno Test and Publish
 
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
 
 permissions:
@@ -26,17 +24,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Deno
-        # uses: denoland/setup-deno@v1
-        uses: denoland/setup-deno@004814556e37c54a2f6e31384c9e18e983317366
+        uses: denoland/setup-deno@v1
+        # uses: denoland/setup-deno@004814556e37c54a2f6e31384c9e18e983317366
         with:
           deno-version: v1.x
-
-      # verify the use of 'deno fmt' on each commit.
-      - name: Verify formatting (dev must run `deno fmt` and commit result)
-        run: deno fmt --check
-
-      - name: Run linter
-        run: deno lint
 
       - name: Run tests
         run: deno test --allow-env --config ./deno.jsonc --jobs --coverage=./coverage ./test
@@ -44,15 +35,11 @@ jobs:
       - name: Generate test coverage
         run: deno coverage ./coverage --lcov > ./coverage/lcov.info
 
-      - name: Code Coverage Report
-        uses: romeovs/lcov-reporter-action@v0.2.11
+      - name: Code Coverage Report (as artifact)
+        uses: actions/upload-artifact@v2
         with:
-          lcov-file: ./coverage/lcov.info
-          github-token: ${{ secrets.CICD_PAT }}
-          # github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: code-coverage-report
+          path: coverage
 
-      # - name: Archive code coverage results
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: code-coverage-report
-      #     path: coverage
+      - name: Publish to denoland
+        run: echo "TODO - publish in GitHub Action; check .github\workflows\deno-main.yml"
