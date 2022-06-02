@@ -17,5 +17,6 @@ To connect to the MongoDB instance, you will need the following
 * a username and password, provisioned by admin [wolven531](https://github.com/wolven531)
 * your machine IP whitelisted by admin [wolven531](https://github.com/wolven531)
 * Connection details
+	* mongodb version = `5.0.8`
 	* cluster = `thefirstcluster`
 	* database name = `deno-db`
