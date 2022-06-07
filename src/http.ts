@@ -2,8 +2,9 @@ import {
 	GQLOptions,
 	runHttpQuery,
 } from 'https://deno.land/x/gql@1.1.1/common.ts';
-import { renderPlaygroundPage } from 'https://deno.land/x/gql@1.1.1/graphiql/render.ts';
 import type { GQLRequest } from 'https://deno.land/x/gql@1.1.1/types.ts';
+// import { renderPlaygroundPage } from 'https://deno.land/x/gql@1.1.1/graphiql/render.ts';
+import { renderPlaygroundPage } from './render.ts';
 
 // !!! all code below is from https://deno.land/x/gql@1.1.1/http.ts
 // except for removal of dynamic import
