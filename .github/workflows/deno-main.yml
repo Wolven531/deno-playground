@@ -57,19 +57,21 @@ jobs:
         with:
           deno-version: v1.x
 
-      - name: Create dist directory
+      # - name: Create dist directory
         ### attempt 1 (works)
         # run: mkdir ./dist
         ### attempt 2
         # run: mkdir /dist
         ### attempt 3
-        run: mkdir /tmp/dist
+        # run: mkdir /tmp/dist
 
-      - name: Create Single JS File in dist directory
+      # - name: Create Single JS File in dist directory
+      - name: Create Single JS File
         # run: deno bundle --reload ./index.ts ./dist/index.js
         # run: deno bundle --reload ./index.ts /dist/index.js
         # run: deno bundle --reload ./index.ts dist/index.js
-        run: deno bundle --reload ./index.ts /tmp/dist/index.js
+        # run: deno bundle --reload ./index.ts /tmp/dist/index.js
+        run: deno bundle --reload ./index.ts ./index.js
 
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
@@ -91,7 +93,7 @@ jobs:
           # entrypoint: index.ts
           # root: src
           ### attempt 1
-          # entrypoint: index.js
+          entrypoint: index.js
           # root: dist
           ### attempt 2
           # entrypoint: ./dist/index.js
@@ -101,7 +103,7 @@ jobs:
           # entrypoint: dist/index.js
           ### attempt 5
           # entrypoint: file:///dist/index.js
-          ### attempt 6
+          ### attempt 6 - use known writable dir
           # entrypoint: file:///tmp/dist/index.js
           ### attempt 7
           # entrypoint: index.js
@@ -116,5 +118,5 @@ jobs:
           # entrypoint: file:///tmp/dist/index.js
           # root: /tmp/dist
           ### attempt 11
-          entrypoint: file:///tmp/dist/index.js
-          root: file:///tmp/dist
+          # entrypoint: file:///tmp/dist/index.js
+          # root: file:///tmp/dist
