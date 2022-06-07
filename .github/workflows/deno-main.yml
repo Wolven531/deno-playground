@@ -134,6 +134,8 @@ jobs:
           ### attempt 13 - Failed to open entrypoint file at 'file:///home/runner/work/deno-playground/deno-playground/file:/tmp/index.js': ENOENT: no such file or directory, lstat '/home/runner/work/deno-playground/deno-playground/file:/tmp/index.js'
           # entrypoint: index.js
           # root: file://tmp
-          ### attempt 14
+          ### attempt 14 - Error: EACCES: permission denied, opendir '/tmp/systemd-private-99407c63964a41ec8c66ae9be7f1049b-ModemManager.service-3oh7th'
+          # entrypoint: index.js
+          # root: /tmp
+          ### attempt 15
           entrypoint: index.js
-          root: /tmp
