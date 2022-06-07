@@ -1,4 +1,4 @@
-// !!! all code below is from https://deno.land/x/gql@1.1.1/http.ts
+// !!! all code below is from https://deno.land/x/gql@1.1.1/render.ts
 // except for pinned version import of xss
 
 // import * as xss from 'https://esm.sh/xss?no-check';
