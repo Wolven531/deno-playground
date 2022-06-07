@@ -4,23 +4,32 @@ export class MongoService {
 	private client: MongoClient;
 	private connectionString: string;
 
-	constructor() {
+	constructor(connectionAddress: string) {
 		this.client = new MongoClient();
-
-		// Connecting to a Local Database
-		this.connectionString = Deno.env.get('MONGO_CONNECTION_STRING') ?? '';
+		this.connectionString = connectionAddress;
 	}
 
 	async fetchPages() {
-		const db = await this.client.connect(this.connectionString);
+		try {
+			const db = await this.client.connect(this.connectionString);
 
-		const pagesCollection = db.collection('pages');
+			const pagesCollection = db.collection('pages');
 
-		const results = pagesCollection.find({});
+			const results = pagesCollection.find({});
 
-		const pages = await results.toArray();
+			const pages = await results.toArray();
 
-		return pages;
+			this.client.close();
+
+			return pages;
+		} catch (err) {
+			console.warn(
+				`Error connecting to DB`,
+				err,
+			);
+
+			return [];
+		}
 	}
 }
 
