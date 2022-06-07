@@ -70,4 +70,5 @@ jobs:
           # root: src
           # root: ./src
           entrypoint: index.ts
-          root: src
+          # root: src
+          root: ./src
