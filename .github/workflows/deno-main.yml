@@ -137,5 +137,7 @@ jobs:
           ### attempt 14 - Error: EACCES: permission denied, opendir '/tmp/systemd-private-99407c63964a41ec8c66ae9be7f1049b-ModemManager.service-3oh7th'
           # entrypoint: index.js
           # root: /tmp
-          ### attempt 15
-          entrypoint: index.js
+          ### attempt 15 - Uploading 1 file(s) (total 5049 bytes)
+          # entrypoint: index.js
+          ### attempt 16
+          entrypoint: ./index.js
