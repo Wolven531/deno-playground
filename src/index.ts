@@ -4,7 +4,7 @@ import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
 import { httpRequestHandler } from './handlers.ts';
 
 try {
-	config({ safe: true });
+	config({ export: true, safe: true });
 
 	// Note that load.ts import above loads env vars from .env files
 	// and the safe option above prevents startup w/o proper env config
