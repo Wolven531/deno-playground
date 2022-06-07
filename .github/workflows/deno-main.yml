@@ -64,7 +64,8 @@ jobs:
           # entrypoint: /index.ts     'file:///index.ts'
           # entrypoint: file:///src/index.ts
           # entrypoint: file://src/index.ts
-          entrypoint: file://index.ts
+          # entrypoint: file://index.ts  'file://index.ts/'
+          entrypoint: file:///index.ts
           # root: ./src/
           # root: src
           # root: ./src
