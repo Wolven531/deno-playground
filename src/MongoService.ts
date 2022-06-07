@@ -1,28 +1,27 @@
-// import { MongoClient } from 'https://deno.land/x/mongo@v0.30.0/src/client.ts';
+import { MongoClient } from 'https://deno.land/x/mongo@v0.30.0/src/client.ts';
 
 export class MongoService {
-	// private client: MongoClient;
+	private client: MongoClient;
 	private connectionString: string;
 
 	constructor(connectionAddress: string) {
-		// this.client = new MongoClient();
+		this.client = new MongoClient();
 		this.connectionString = connectionAddress;
 	}
 
 	async fetchPages() {
 		try {
-			return [];
-			// const db = await this.client.connect(this.connectionString);
+			const db = await this.client.connect(this.connectionString);
 
-			// const pagesCollection = db.collection('pages');
+			const pagesCollection = db.collection('pages');
 
-			// const results = pagesCollection.find({});
+			const results = pagesCollection.find({});
 
-			// const pages = await results.toArray();
+			const pages = await results.toArray();
 
-			// this.client.close();
+			this.client.close();
 
-			// return pages;
+			return pages;
 		} catch (err) {
 			console.warn(
 				`Error connecting to DB`,
