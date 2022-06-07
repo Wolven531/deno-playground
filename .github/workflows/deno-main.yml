@@ -57,6 +57,9 @@ jobs:
         with:
           deno-version: v1.x
 
+      - name: Create dist directory
+        run: mkdir ./dist
+
       - name: Create Single JS File in dist directory
         run: deno bundle ./src/index.ts ./dist/index.js
 
