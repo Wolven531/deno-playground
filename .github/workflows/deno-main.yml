@@ -131,6 +131,9 @@ jobs:
           ### attempt 12 - Failed to open entrypoint file at 'file:///home/runner/work/deno-playground/deno-playground/file:/tmp/index.js': ENOENT: no such file or directory, lstat '/home/runner/work/deno-playground/deno-playground/file:/tmp/index.js'
           # entrypoint: index.js
           # root: file:///tmp
-          ### attempt 13
+          ### attempt 13 - Failed to open entrypoint file at 'file:///home/runner/work/deno-playground/deno-playground/file:/tmp/index.js': ENOENT: no such file or directory, lstat '/home/runner/work/deno-playground/deno-playground/file:/tmp/index.js'
+          # entrypoint: index.js
+          # root: file://tmp
+          ### attempt 14
           entrypoint: index.js
-          root: file://tmp
+          root: /tmp
