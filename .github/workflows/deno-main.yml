@@ -141,5 +141,8 @@ jobs:
           # entrypoint: index.js
           ### attempt 16 - Uploading 1 file(s) (total 5150 bytes)
           # entrypoint: ./index.js
-          ### attempt 17
+          ### attempt 17 - Entrypoint must be in the working directory (cwd, or specified root directory).
           entrypoint: file:///tmp/index.js
+          ### attempt 18
+          entrypoint: file:///tmp/index.js
+          root: file:///tmp
