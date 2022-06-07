@@ -4,20 +4,20 @@ import { httpRequestHandler } from './handlers.ts';
 
 try {
 	config({ export: true, safe: true });
-
-	// Note that the safe option above prevents startup w/o proper env config
-	const env = Deno.env.toObject();
-
-	const PORT = parseInt(env.PORT ?? '8080');
-
-	console.log(
-		`Starting HTTP webserver; access it at http://localhost:${PORT}`,
-	);
-
-	await serve(httpRequestHandler, { port: PORT });
 } catch (err) {
 	console.warn(
-		'Missing env vars, refusing to start',
+		'Missing env vars',
 		err,
 	);
 }
+
+// Note that the safe option above prevents startup w/o proper env config
+const env = Deno.env.toObject();
+
+const PORT = parseInt(env.PORT ?? '8080');
+
+console.log(
+	`Starting HTTP webserver; access it at http://localhost:${PORT}`,
+);
+
+await serve(httpRequestHandler, { port: PORT });
