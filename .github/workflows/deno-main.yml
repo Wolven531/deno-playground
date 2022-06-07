@@ -82,5 +82,10 @@ jobs:
           # root: ./src
           # entrypoint: index.ts
           # root: src
-          entrypoint: ./dist/index.js
+          ### attempt 1
+          # entrypoint: index.js
           # root: dist
+          ### attempt 2
+          # entrypoint: ./dist/index.js
+          ### attempt 3
+          entrypoint: index.js
