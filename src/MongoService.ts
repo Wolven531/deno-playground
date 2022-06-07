@@ -10,6 +10,10 @@ export class MongoService {
 	}
 
 	async fetchPages() {
+		console.info(
+			`[fetchPages] this.connectionString="${this.connectionString}"`,
+		);
+
 		try {
 			const db = await this.client.connect(this.connectionString);
 
