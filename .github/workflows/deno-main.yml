@@ -110,5 +110,8 @@ jobs:
           # entrypoint: index.js
           # root: /tmp/dist
           ### attempt 9
-          entrypoint: ./index.js
+          # entrypoint: ./index.js
+          # root: /tmp/dist
+          ### attempt 10
+          entrypoint: file:///tmp/dist/index.js
           root: /tmp/dist
