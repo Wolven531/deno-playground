@@ -80,6 +80,9 @@ jobs:
       - name: Create Single JS File (/tmp/index.js)
         run: deno bundle --reload ./index.ts /tmp/index.js
 
+      - name: Create Single JS File (/src/index.js)
+        run: deno bundle --reload ./index.ts /src/index.js
+
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
