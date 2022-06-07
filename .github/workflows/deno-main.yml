@@ -61,5 +61,6 @@ jobs:
           # entrypoint: index.ts # the entrypoint to deploy relative to `root`
           # entrypoint: file:///src/index.ts # the entrypoint to deploy relative to `root`
           # entrypoint: file://src/index.ts # the entrypoint to deploy relative to `root`
-          # root: ./src/ 
-          root: src
+          # root: ./src/
+          # root: src
+          root: ./src
