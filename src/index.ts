@@ -1,10 +1,25 @@
+import 'https://deno.land/x/dotenv@v3.2.0/load.ts';
+import { config } from 'https://deno.land/x/dotenv@v3.2.0/mod.ts';
 import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
 import { httpRequestHandler } from './handlers.ts';
 
-const env = Deno.env.toObject();
+try {
+	config({ export: true, safe: true });
 
-const PORT = parseInt(env.PORT ?? '8080');
+	// Note that load.ts import above loads env vars from .env files
+	// and the safe option above prevents startup w/o proper env config
+	const env = Deno.env.toObject();
 
-console.log(`Starting HTTP webserver; access it at http://localhost:${PORT}`);
+	const PORT = parseInt(env.PORT ?? '8080');
 
-await serve(httpRequestHandler, { port: PORT });
+	console.log(
+		`Starting HTTP webserver; access it at http://localhost:${PORT}`,
+	);
+
+	await serve(httpRequestHandler, { port: PORT });
+} catch (err) {
+	console.warn(
+		'Missing env vars, refusing to start',
+		err,
+	);
+}

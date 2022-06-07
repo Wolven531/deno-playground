@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# ignore local .env file but NOT example file
+.env
+!.env.example
