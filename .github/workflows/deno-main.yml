@@ -102,4 +102,7 @@ jobs:
           ### attempt 5
           # entrypoint: file:///dist/index.js
           ### attempt 6
-          entrypoint: file:///tmp/dist/index.js
+          # entrypoint: file:///tmp/dist/index.js
+          ### attempt 7
+          entrypoint: index.js
+          root: file:///tmp/dist
