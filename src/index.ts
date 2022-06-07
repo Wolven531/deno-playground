@@ -3,7 +3,9 @@ import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
 import { httpRequestHandler } from './handlers.ts';
 
 try {
+	// !!! wrapped in try/catch - works locally, not using Deno Deploy
 	config({ export: true, safe: true });
+	// Note that the safe option above prevents startup w/o proper env config
 } catch (err) {
 	console.warn(
 		'Missing env vars',
@@ -11,9 +13,7 @@ try {
 	);
 }
 
-// Note that the safe option above prevents startup w/o proper env config
 const env = Deno.env.toObject();
-
 const PORT = parseInt(env.PORT ?? '8080');
 
 console.log(
