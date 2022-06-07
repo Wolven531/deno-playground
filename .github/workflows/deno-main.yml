@@ -139,5 +139,7 @@ jobs:
           # root: /tmp
           ### attempt 15 - Uploading 1 file(s) (total 5049 bytes)
           # entrypoint: index.js
-          ### attempt 16
-          entrypoint: ./index.js
+          ### attempt 16 - Uploading 1 file(s) (total 5150 bytes)
+          # entrypoint: ./index.js
+          ### attempt 17
+          entrypoint: file:///tmp/index.js
