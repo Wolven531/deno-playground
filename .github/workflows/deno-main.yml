@@ -41,5 +41,17 @@ jobs:
           name: code-coverage-report
           path: coverage
 
-      - name: Publish to denoland
-        run: echo "TODO - publish in GitHub Action; check .github\workflows\deno-main.yml"
+  deploy:
+    # more info - https://github.com/denoland/deployctl/blob/main/action/README.md
+    permissions:
+      id-token: write # This is required to allow the GitHub Action to authenticate with Deno Deploy
+      contents: read
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: Deploy to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: fast-rabbit-27 # the name of the project on Deno Deploy
+          entrypoint: src/index.ts # the entrypoint to deploy
