@@ -56,4 +56,4 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: fast-rabbit-27 # the name of the project on Deno Deploy
-          entrypoint: ./src/index.ts # the entrypoint to deploy
+          entrypoint: index.ts # the entrypoint to deploy
