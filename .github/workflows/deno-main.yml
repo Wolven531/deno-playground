@@ -57,10 +57,11 @@ jobs:
         with:
           project: fast-rabbit-27 # the name of the project on Deno Deploy
           # entrypoint: ./src/index.ts # the entrypoint to deploy relative to `root`
-          # entrypoint: src/index.ts # the entrypoint to deploy relative to `root`
-          # entrypoint: ./index.ts
+          entrypoint: ../src/index.ts
+          # entrypoint: src/index.ts 'file:///src/src/index.ts'
+          # entrypoint: ./index.ts   'file:///src/index.ts'
           # entrypoint: index.ts
-          entrypoint: /index.ts
+          # entrypoint: /index.ts    'file:///index.ts'
           # entrypoint: file:///src/index.ts
           # entrypoint: file://src/index.ts
           # root: ./src/
