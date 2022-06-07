@@ -58,7 +58,7 @@ jobs:
           deno-version: v1.x
 
       - name: Create Single JS File in dist directory
-        run: deno bundle ./index.ts ./dist/index.js
+        run: deno bundle ./src/index.ts ./dist/index.js
 
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
