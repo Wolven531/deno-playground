@@ -58,11 +58,15 @@ jobs:
           deno-version: v1.x
 
       - name: Create dist directory
-        # run: mkdir ./dist
-        run: mkdir /dist
+        ### attempt 1 (works)
+        run: mkdir ./dist
+        ### attempt 2
+        # run: mkdir /dist
 
       - name: Create Single JS File in dist directory
-        run: deno bundle --reload ./index.ts /dist/index.js
+        # run: deno bundle --reload ./index.ts ./dist/index.js
+        # run: deno bundle --reload ./index.ts /dist/index.js
+        run: deno bundle --reload ./index.ts dist/index.js
 
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
