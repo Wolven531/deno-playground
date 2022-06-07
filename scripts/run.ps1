@@ -1,3 +1,3 @@
 # from project root directory
 
-deno run --allow-env --allow-net --config ./deno.jsonc ./src/index.ts
+deno run --allow-env --allow-net --allow-read --config ./deno.jsonc ./src/index.ts
