@@ -146,6 +146,9 @@ jobs:
           ### attempt 18 - Entrypoint must be in the working directory (cwd, or specified root directory).
           # entrypoint: file:///tmp/index.js
           # root: file:///tmp
-          ### attempt 19
+          ### attempt 19 - Failed to open entrypoint file at 'file:///home/runner/work/deno-playground/deno-playground/file:/tmp/index.js': ENOENT: no such file or directory, lstat '/home/runner/work/deno-playground/deno-playground/file:/tmp/index.js'
           entrypoint: ./index.js
+          root: file:///tmp
+          ### attempt 20
+          entrypoint: file:///index.js
           root: file:///tmp
