@@ -57,15 +57,17 @@ jobs:
         with:
           project: fast-rabbit-27 # the name of the project on Deno Deploy
           # entrypoint: ./src/index.ts # the entrypoint to deploy relative to `root`
-          # entrypoint: ../src/index.ts 'file:///home/runner/work/deno-playground/src/index.ts'
-          # entrypoint: src/index.ts  'file:///src/src/index.ts'
-          # entrypoint: ./index.ts    'file:///src/index.ts'
+          # entrypoint: ../src/index.ts  'file:///home/runner/work/deno-playground/src/index.ts'
+          # entrypoint: src/index.ts     'file:///src/src/index.ts'
+          # entrypoint: ./index.ts       'file:///src/index.ts'
+          # entrypoint: /index.ts        'file:///index.ts'
+          # entrypoint: file://index.ts  'file://index.ts/'
+          # entrypoint: file:///index.ts 'file:///index.ts'
           # entrypoint: index.ts
-          # entrypoint: /index.ts     'file:///index.ts'
           # entrypoint: file:///src/index.ts
           # entrypoint: file://src/index.ts
-          # entrypoint: file://index.ts  'file://index.ts/'
-          entrypoint: file:///index.ts
           # root: ./src/
           # root: src
           # root: ./src
+          entrypoint: index.ts
+          root: src
