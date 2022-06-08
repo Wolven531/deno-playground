@@ -2,6 +2,8 @@ import { config } from 'https://deno.land/x/dotenv@v3.2.0/mod.ts';
 import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
 import { httpRequestHandler } from './handlers.ts';
 
+console.info('About to fire config() to load env vars');
+
 try {
 	// !!! wrapped in try/catch - works locally, not using Deno Deploy
 	config({
