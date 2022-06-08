@@ -13,7 +13,18 @@ export class MongoService {
 	 */
 	async fetchPages(): Promise<Record<string, unknown>[]> {
 		try {
-			const db = await this.getDbConnection();
+			const db = await this.getDbConnection().catch((err) => {
+				console.warn(
+					`Error connecting to DB`,
+					err,
+				);
+
+				return null;
+			});
+
+			if (db === null) {
+				return [];
+			}
 
 			const pagesCollection = db.collection('pages');
 
@@ -25,10 +36,7 @@ export class MongoService {
 
 			return pages;
 		} catch (err) {
-			console.warn(
-				`Error connecting to DB`,
-				err,
-			);
+			console.warn('Error getting pages', err);
 
 			return [];
 		}
