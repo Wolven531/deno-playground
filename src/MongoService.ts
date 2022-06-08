@@ -46,6 +46,8 @@ export class MongoService {
 		const mongoUser = Deno.env.get('MONGO_USER') ?? '';
 		const mongoHost = Deno.env.get('MONGO_CLUSTER') ?? '';
 
+		console.info('Returning MongoDB connection');
+
 		return connStr.length > 0
 			? this.client.connect(connStr) // connect to local Database
 			: this.client.connect({ // connect to Mongo Atlas Database
