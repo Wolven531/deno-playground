@@ -50,7 +50,11 @@ export const httpRequestHandler = async (
 		<body>
 			<h1>Welcome!</h1>
 			<a href="/graphql" target="_self" re>GraphQL Playground</a>
-			<p>${JSON.stringify(pages)}</p>
+			<h2>Page Analytics (from MongoDB)</h2>
+			<br/>
+			<textarea cols="80" rows="17">${
+				JSON.stringify(pages, null, 4)
+			}</textarea>
 			</body>
 	</html>
 	`,
