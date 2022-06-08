@@ -4,20 +4,19 @@ import { CountServiceFactory } from './CountService.ts';
 import { GraphQLHTTP } from './http.ts';
 import { MongoService } from './MongoService.ts';
 
-const countSvc = CountServiceFactory();
-
+const resolvers = { Query: { hello: () => `Hello World!` } };
 const typeDefs = gql`
 	type Query {
 		hello: String
 	}
 `;
 
-const resolvers = { Query: { hello: () => `Hello World!` } };
-
 const gqlMiddleware = await GraphQLHTTP<Request>({
 	graphiql: true,
 	schema: makeExecutableSchema({ resolvers, typeDefs }),
 });
+const countSvc = CountServiceFactory();
+const mongoSvc = new MongoService();
 
 export const httpRequestHandler = async (
 	request: Request,
@@ -36,11 +35,6 @@ export const httpRequestHandler = async (
 	}
 
 	if (pathname === '/' && request.method === 'GET') {
-		// deno-lint-ignore ban-untagged-todo
-		// TODO - re-use MongoSvc
-		const conn = Deno.env.get('MONGO_CONNECTION_STRING') ?? '';
-		const mongoSvc = new MongoService(conn);
-
 		const pages = await mongoSvc.fetchPages();
 
 		const headers = new Headers();
