@@ -4,8 +4,12 @@ import { httpRequestHandler } from './handlers.ts';
 
 try {
 	// !!! wrapped in try/catch - works locally, not using Deno Deploy
-	config({ allowEmptyValues: true, export: true, safe: true });
-	// Note that the safe option above prevents startup w/o proper env config
+	config({
+		allowEmptyValues: true,
+		export: true,
+		// Note that the safe option prevents startup w/o proper env config
+		// safe: true
+	});
 } catch (err) {
 	console.warn(
 		'Missing env vars',
