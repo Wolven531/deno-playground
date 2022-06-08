@@ -4,7 +4,7 @@ import { httpRequestHandler } from './handlers.ts';
 
 try {
 	// !!! wrapped in try/catch - works locally, not using Deno Deploy
-	config({ export: true, safe: true });
+	config({ allowEmptyValues: true, export: true, safe: true });
 	// Note that the safe option above prevents startup w/o proper env config
 } catch (err) {
 	console.warn(
