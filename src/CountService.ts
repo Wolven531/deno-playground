@@ -1,12 +1,4 @@
-export interface ICountService {
-	/**
-	 * Increase count
-	 *
-	 * @param {number | undefined} incrementAmount Optional amount to increase count by (default = 1)
-	 */
-	addToCount: (incrementAmount?: number) => void;
-	getCount: () => number;
-}
+import type { ICountService } from './types.d.ts';
 
 /**
  * This function returns an instance of ICountService

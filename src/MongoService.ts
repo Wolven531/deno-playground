@@ -1,5 +1,6 @@
 import { MongoClient } from 'https://deno.land/x/mongo@v0.30.0/src/client.ts';
 import type { Database } from 'https://deno.land/x/mongo@v0.30.0/src/database.ts';
+import type { IPage } from './types.d.ts';
 
 export class MongoService {
 	private client: MongoClient;
@@ -11,7 +12,9 @@ export class MongoService {
 	/**
 	 * This method fetches all documents in the `pages` collection
 	 */
-	async fetchPages(): Promise<Record<string, unknown>[]> {
+	async fetchPages(): Promise<IPage[]> {
+		let pages: IPage[] = [];
+
 		try {
 			const db = await this.getDbConnection();
 
@@ -19,20 +22,18 @@ export class MongoService {
 				return [];
 			}
 
-			const pagesCollection = db.collection('pages');
+			const pagesCollection = db.collection<IPage>('pages');
 
 			const results = pagesCollection.find({});
 
-			const pages = await results.toArray();
-
-			this.client.close();
-
-			return pages;
+			pages = await results.toArray();
 		} catch (err) {
 			console.warn('Error getting pages', err);
-
-			return [];
+		} finally {
+			this.client.close();
 		}
+
+		return pages;
 	}
 
 	/**
