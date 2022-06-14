@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    # expose:
+    #   - 27017
+    ports:
+      - "127.0.0.1:27017:27017"
+      # - "27017:27017/udp"
+      # - "27017:27017/tcp"
+      # - "27017:27017"
+      # - "27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: docker
+      MONGO_INITDB_ROOT_PASSWORD: mongopw
+
+  webapp:
+    image: denoplayground
+    container_name: webapp
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    depends_on:
+      - mongo
