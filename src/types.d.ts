@@ -10,6 +10,17 @@ export interface ICountService {
 	getCount: () => number;
 }
 
+export interface IMongoService {
+	/**
+	 * This method fetches all documents in the `pages` collection
+	 */
+	fetchPages(): Promise<IPage[]>;
+	/**
+	 * This method sets up the pages collection, including any default documents needed within
+	 */
+	init(): Promise<void>;
+}
+
 export interface INameService {
 	/**
 	 * Get the current name value
@@ -25,8 +36,8 @@ export interface INameService {
 }
 
 export interface IPage {
-	'_id': ObjectId;
-	'name': string;
-	'count': number;
-	'path': string;
+	_id?: ObjectId;
+	name: string;
+	count: number;
+	path: string;
 }

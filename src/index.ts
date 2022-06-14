@@ -1,6 +1,7 @@
 import { config } from 'https://deno.land/x/dotenv@v3.2.0/mod.ts';
 import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
 import { httpRequestHandler } from './handlers.ts';
+import { MongoService } from './MongoService.ts';
 
 console.info('About to fire config() to load env vars');
 
@@ -21,9 +22,17 @@ try {
 
 const env = Deno.env.toObject();
 const PORT = parseInt(env.PORT ?? '8080');
+const mongoSvc = new MongoService();
 
-console.log(
-	`Starting HTTP webserver; access it at http://localhost:${PORT}`,
+console.log('Setting up mongo instance');
+
+await mongoSvc.init();
+
+console.log(`Starting HTTP webserver; access it at http://localhost:${PORT}`);
+
+await serve(
+	(req) => {
+		return httpRequestHandler(req, mongoSvc);
+	},
+	{ port: PORT },
 );
-
-await serve(httpRequestHandler, { port: PORT });

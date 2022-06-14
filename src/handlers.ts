@@ -2,7 +2,7 @@ import { gql } from 'https://deno.land/x/graphql_tag@0.0.1/mod.ts';
 import { makeExecutableSchema } from 'https://deno.land/x/graphql_tools@0.0.2/schema/makeExecutableSchema.ts';
 import { CountServiceFactory } from './CountService.ts';
 import { GraphQLHTTP } from './http.ts';
-import { MongoService } from './MongoService.ts';
+import type { IMongoService } from './types.d.ts';
 
 const resolvers = { Query: { hello: () => `Hello World!` } };
 const typeDefs = gql`
@@ -16,10 +16,10 @@ const gqlMiddleware = await GraphQLHTTP<Request>({
 	schema: makeExecutableSchema({ resolvers, typeDefs }),
 });
 const countSvc = CountServiceFactory();
-const mongoSvc = new MongoService();
 
 export const httpRequestHandler = async (
 	request: Request,
+	mongoSvc: IMongoService,
 ): Promise<Response> => {
 	countSvc.addToCount();
 	const reqNum = countSvc.getCount();
