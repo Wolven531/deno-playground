@@ -1,17 +1,14 @@
 import { MongoClient } from 'https://deno.land/x/mongo@v0.30.0/src/client.ts';
 import type { Database } from 'https://deno.land/x/mongo@v0.30.0/src/database.ts';
-import type { IPage } from './types.d.ts';
+import type { IMongoService, IPage } from './types.d.ts';
 
-export class MongoService {
+export class MongoService implements IMongoService {
 	private client: MongoClient;
 
 	constructor() {
 		this.client = new MongoClient();
 	}
 
-	/**
-	 * This method fetches all documents in the `pages` collection
-	 */
 	async fetchPages(): Promise<IPage[]> {
 		let pages: IPage[] = [];
 
@@ -34,6 +31,49 @@ export class MongoService {
 		}
 
 		return pages;
+	}
+
+	async init(): Promise<void> {
+		try {
+			const db = await this.getDbConnection();
+
+			if (db === null) {
+				return;
+			}
+
+			const colls = await db.listCollectionNames();
+
+			if (!colls.includes('pages')) {
+				const pagesCollection = await db.createCollection<IPage>(
+					'pages',
+				);
+
+				const defaultPages: IPage[] = [
+					{
+						count: 0,
+						name: 'gql-playground',
+						path: '/graphql',
+					},
+					{
+						count: 0,
+						name: 'home',
+						path: '/',
+					},
+				];
+
+				console.info(
+					`Inserting default pages -\n\n${
+						JSON.stringify(defaultPages, null, 2)
+					}`,
+				);
+
+				await pagesCollection.insertMany(defaultPages);
+			}
+		} catch (err) {
+			console.warn('Error setting up DB', err);
+		} finally {
+			this.client.close();
+		}
 	}
 
 	/**
