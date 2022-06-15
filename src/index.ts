@@ -26,7 +26,34 @@ const mongoSvc = new MongoService();
 
 console.log('Setting up mongo instance');
 
-await mongoSvc.init();
+const maxAttempts = 10;
+let db;
+
+for (let retries = 0; retries < maxAttempts; retries++) {
+	try {
+		console.log(`Try #${retries + 1} - About to attempt connection`);
+		db = await mongoSvc.getDbConnection();
+	} catch (err) {
+		console.log(
+			`Try #${
+				retries + 1
+			} - Failed to connect, waiting one second and retrying`,
+			err,
+		);
+
+		await new Promise<number>((resolve) => {
+			const cleanId = setTimeout(() => {
+				resolve(cleanId);
+			}, 1000);
+		});
+	}
+}
+
+if (db) {
+	console.log('Running MongoService init()');
+
+	await mongoSvc.init();
+}
 
 console.log(`Starting HTTP webserver; access it at http://localhost:${PORT}`);
 
