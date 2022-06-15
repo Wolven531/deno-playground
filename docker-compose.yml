@@ -8,20 +8,29 @@ services:
     # expose:
     #   - 27017
     ports:
-      - "127.0.0.1:27017:27017"
+      # - "127.0.0.1:27017:27017"
       # - "27017:27017/udp"
       # - "27017:27017/tcp"
-      # - "27017:27017"
+      - 27017:27017
       # - "27017"
+    # volumes:
+    #   - mongodb_data_container:/data/db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: docker
+      MONGO_INITDB_DATABASE: deno-db
       MONGO_INITDB_ROOT_PASSWORD: mongopw
+      MONGO_INITDB_ROOT_USERNAME: docker
 
   webapp:
-    image: denoplayground
+    # image: denoplayground
     container_name: webapp
     build:
       context: .
       dockerfile: ./Dockerfile
+    environment:
+      WAIT_HOSTS: mongodb:27017
+    env_file: .env
     depends_on:
       - mongo
+
+# volumes:
+#   mongodb_data_container
