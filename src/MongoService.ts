@@ -33,6 +33,42 @@ export class MongoService implements IMongoService {
 		return pages;
 	}
 
+	getDbConnection(): Promise<Database> {
+		const connStr = Deno.env.get('MONGO_CONNECTION_STRING') ?? '';
+		const mongoDbName = Deno.env.get('MONGO_DATABASE') ?? '';
+		const mongoPassword = Deno.env.get('MONGO_PASS') ?? '';
+		const mongoPort = parseInt(Deno.env.get('MONGO_PORT') ?? '27017');
+		const mongoUser = Deno.env.get('MONGO_USER') ?? '';
+		const mongoHost = Deno.env.get('MONGO_CLUSTER') ?? '';
+
+		console.info('Returning MongoDB connection');
+
+		return connStr.length > 0
+			? this.client.connect(connStr) // connect to local Database
+			: this.client.connect({ // connect to Mongo Atlas Database
+				credential: {
+					db: mongoDbName,
+					mechanism: 'SCRAM-SHA-1',
+					password: mongoPassword,
+					username: mongoUser,
+				},
+				db: mongoDbName,
+				servers: [
+					{
+						host: mongoHost,
+						port: mongoPort,
+					},
+				],
+				tls: true,
+			});
+
+		// return conn.catch((err) => {
+		// 	console.warn('Error connecting to DB', err);
+
+		// 	return null;
+		// });
+	}
+
 	async init(): Promise<void> {
 		try {
 			const db = await this.getDbConnection();
@@ -74,45 +110,5 @@ export class MongoService implements IMongoService {
 		} finally {
 			this.client.close();
 		}
-	}
-
-	/**
-	 * This method uses env vars to create a connection to a MongoDB instance. Returns null if connection fails
-	 *
-	 * Be sure to call `this.client.close()` when finished w/ the connection
-	 */
-	private getDbConnection(): Promise<Database | null> {
-		const connStr = Deno.env.get('MONGO_CONNECTION_STRING') ?? '';
-		const mongoDbName = Deno.env.get('MONGO_DATABASE') ?? '';
-		const mongoPassword = Deno.env.get('MONGO_PASS') ?? '';
-		const mongoUser = Deno.env.get('MONGO_USER') ?? '';
-		const mongoHost = Deno.env.get('MONGO_CLUSTER') ?? '';
-
-		console.info('Returning MongoDB connection');
-
-		const conn = connStr.length > 0
-			? this.client.connect(connStr) // connect to local Database
-			: this.client.connect({ // connect to Mongo Atlas Database
-				credential: {
-					db: mongoDbName,
-					mechanism: 'SCRAM-SHA-1',
-					password: mongoPassword,
-					username: mongoUser,
-				},
-				db: mongoDbName,
-				servers: [
-					{
-						host: mongoHost,
-						port: 27017,
-					},
-				],
-				tls: true,
-			});
-
-		return conn.catch((err) => {
-			console.warn('Error connecting to DB', err);
-
-			return null;
-		});
 	}
 }

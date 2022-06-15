@@ -1,4 +1,5 @@
 import type { ObjectId } from 'https://deno.land/x/web_bson@v0.2.2/src/objectid.ts';
+import type { Database } from 'https://deno.land/x/mongo@v0.30.0/src/database.ts';
 
 export interface ICountService {
 	/**
@@ -15,6 +16,12 @@ export interface IMongoService {
 	 * This method fetches all documents in the `pages` collection
 	 */
 	fetchPages(): Promise<IPage[]>;
+	/**
+	 * This method uses env vars to create a connection to a MongoDB instance. Returns null if connection fails
+	 *
+	 * Be sure to call `this.client.close()` when finished w/ the connection
+	 */
+	getDbConnection(): Promise<Database | null>;
 	/**
 	 * This method sets up the pages collection, including any default documents needed within
 	 */
