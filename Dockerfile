@@ -6,7 +6,7 @@ RUN apt-get -y update && apt-get install -y git vim curl
 
 # RUN dockerize -wait tcp://mongo:27017 -timeout 300s -wait-retry-interval 30s
 
-# The port on which your application listens
+# Port on which application listens
 EXPOSE 8080
 
 WORKDIR /

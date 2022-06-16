@@ -5,14 +5,8 @@ services:
     image: mongo:latest
     container_name: mongo
     restart: always
-    # expose:
-    #   - 27017
     ports:
-      # - "127.0.0.1:27017:27017"
-      # - "27017:27017/udp"
-      # - "27017:27017/tcp"
       - 27017:27017
-      # - "27017"
     # volumes:
     #   - mongodb_data_container:/data/db
     environment:
@@ -27,26 +21,26 @@ services:
     ports:
       - 8081:8081
     environment:
-      # ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      # ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_OPTIONS_EDITORTHEME: material
       ME_CONFIG_MONGODB_ADMINUSERNAME: docker
       ME_CONFIG_MONGODB_ADMINPASSWORD: mongopw
+      # !!! uses name of mongo container and creds from mongo container; MUST end w/ slash
+      ME_CONFIG_MONGODB_URL: mongodb://docker:mongopw@mongo:27017/
       ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
-      ME_CONFIG_MONGODB_SERVER: "0.0.0.0"
-      # ME_CONFIG_MONGODB_SERVER: 0.0.0.0
-      ME_CONFIG_MONGODB_PORT: 27017
-      # ME_CONFIG_MONGODB_URL: mongodb://docker:mongopw@mongo:27017/
-      # ME_CONFIG_MONGODB_URL: mongodb://docker:mongopw@0.0.0.0:27017/
-      # ME_CONFIG_MONGODB_URL: mongodb://docker:mongopw@0.0.0.0:27017
+    depends_on:
+      - mongo
 
   webapp:
-    # image: denoplayground
+    image: denoplayground
     container_name: webapp
     build:
       context: .
       dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
     environment:
-      WAIT_HOSTS: mongodb:27017
+      # !!! uses name of mongo container; MUST end w/ slash
+      WAIT_HOSTS: mongo:27017/
     env_file: .env
     depends_on:
       - mongo
