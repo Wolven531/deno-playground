@@ -70,6 +70,8 @@ export class MongoService implements IMongoService {
 	}
 
 	async init(): Promise<void> {
+		console.log('Running MongoService init()');
+
 		try {
 			const db = await this.getDbConnection();
 
