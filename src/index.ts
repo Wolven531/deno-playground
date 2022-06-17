@@ -1,6 +1,7 @@
 import { config } from 'https://deno.land/x/dotenv@v3.2.0/mod.ts';
 import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
-import { Timeout, TimeoutError } from 'https://deno.land/x/timeout/mod.ts';
+import { delay } from 'https://deno.land/std@0.140.0/async/delay.ts';
+// import { Timeout, TimeoutError } from 'https://deno.land/x/timeout/mod.ts';
 import { httpRequestHandler } from './handlers.ts';
 import { MongoService } from './MongoService.ts';
 import type { Database } from 'https://deno.land/x/mongo@v0.30.0/src/database.ts';
@@ -26,20 +27,21 @@ const env = Deno.env.toObject();
 const PORT = parseInt(env.PORT ?? '8080');
 const mongoSvc = new MongoService();
 
-const attemptDb = (attemptNum: number): Promise<Database | null> => {
+const attemptDb = (
+	attemptNum: number,
+	stall: number,
+): Promise<Database | null> => {
 	console.log(
 		`Try #${attemptNum + 1} - ${
 			new Date().getTime()
 		} - About to attempt connection`,
 	);
 
-	// const stallMillis = 2 * 1000;
-	const stallMillis = 5 * 1000; // initial delay that runs every time
 	// no Timeout on first try
 	const optionalTimeout = attemptNum === 0
 		// ? Promise.resolve()
-		? Timeout.wait(stallMillis)
-		: Timeout.wait(stallMillis);
+		? delay(stall)
+		: delay(stall);
 
 	return optionalTimeout.then(() => {
 		return mongoSvc.getDbConnection().then((connDb) => {
@@ -51,44 +53,44 @@ const attemptDb = (attemptNum: number): Promise<Database | null> => {
 
 			return connDb;
 		});
-	}).catch((err) => {
-		console.log(
-			`Try #${attemptNum + 1} - ${
-				new Date().getTime()
-			} - Failed to connect, waiting ${stallMillis} ms, then retrying`,
-			err,
-		);
-
-		return null;
 	});
 };
 
 const waitForDb = (): Promise<void> => {
 	console.log('Setting up mongo instance');
 
-	return new Promise<void>((resolve, reject) => {
+	return new Promise<void>((resolve) => {
 		// deno-lint-ignore ban-untagged-todo
-		const maxAttempts = 1; // TODO - fix retry logic
-		let retries = 0;
-		let db;
+		// TODO - fix retry logic
+		// const maxTries = 1;
+		const stall = 1 * 1000;
+		const currentTry = 0;
+		// let db: Database | null = null;
 
-		do {
-			attemptDb(retries)
-				.then((connDb) => {
-					db = connDb;
-					console.log('Running MongoService init()');
+		// do {
+		return attemptDb(currentTry, stall)
+			.then((/* connDb */) => {
+				// db = connDb;
 
-					return mongoSvc.init();
-				})
-				.then(resolve)
-				.catch(() => {
-					return;
-				})
-				.finally(() => {
-				});
+				return mongoSvc.init();
+			})
+			.then(resolve)
+			// .then(() => {
+			// return db;
+			// })
+			.catch((err) => {
+				console.log(
+					`Try #${currentTry + 1} - ${
+						new Date().getTime()
+					} - Failed to connect, waiting ${stall} ms, then retrying`,
+					err,
+				);
 
-			retries++;
-		} while (!db && retries < maxAttempts);
+				return null;
+			});
+
+		// 	currentTry++;
+		// } while (!db && currentTry < maxTries);
 
 		// for (let retries = 0; retries < maxAttempts; retries++) {
 		// 	try {
@@ -135,22 +137,29 @@ const waitForDb = (): Promise<void> => {
 		// 	resolve();
 		// });
 		// } else {
-		if (!db) {
-			reject('could not connect to DB');
-		}
+		// if (!db) {
+		// 	reject('could not connect to DB');
+		// }
 		// }
 	});
 };
 
-await waitForDb().catch((err) => {
-	console.warn('Top level DB error -', err);
-});
+await waitForDb()
+	.then(() => {
+		console.log(
+			`Starting HTTP webserver; access it at http://localhost:${PORT}`,
+		);
 
-console.log(`Starting HTTP webserver; access it at http://localhost:${PORT}`);
-
-await serve(
-	(req) => {
-		return httpRequestHandler(req, mongoSvc);
-	},
-	{ port: PORT },
-);
+		return serve(
+			(req) => {
+				return httpRequestHandler(req, mongoSvc);
+			},
+			{ port: PORT },
+		);
+	})
+	.then(() => {
+		console.log('when does this happen?');
+	})
+	.catch((err) => {
+		console.warn('Top level DB error -', err);
+	});
