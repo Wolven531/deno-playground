@@ -1,10 +1,11 @@
 import { config } from 'https://deno.land/x/dotenv@v3.2.0/mod.ts';
-import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
-import { delay } from 'https://deno.land/std@0.140.0/async/delay.ts';
-// import { Timeout, TimeoutError } from 'https://deno.land/x/timeout/mod.ts';
-import { httpRequestHandler } from './handlers.ts';
-import { MongoService } from './MongoService.ts';
 import type { Database } from 'https://deno.land/x/mongo@v0.30.0/src/database.ts';
+import { delay } from 'https://deno.land/std@0.140.0/async/delay.ts';
+import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
+// import { Timeout, TimeoutError } from 'https://deno.land/x/timeout/mod.ts';
+import { CountServiceFactory } from './CountService.ts';
+import { gqlHandler, httpRequestHandler } from './handlers.ts';
+import { MongoService } from './MongoService.ts';
 
 console.info('About to fire config() to load env vars');
 
@@ -23,8 +24,12 @@ try {
 	);
 }
 
+// env-related constants
 const env = Deno.env.toObject();
 const PORT = parseInt(env.PORT ?? '8080');
+
+// SIPD (Single Instance Per Deno) constants
+const countSvc = CountServiceFactory();
 const mongoSvc = new MongoService();
 
 const attemptDb = (
@@ -37,14 +42,15 @@ const attemptDb = (
 		} - About to attempt connection`,
 	);
 
-	// no Timeout on first try
-	const optionalTimeout = attemptNum === 0
-		// ? Promise.resolve()
-		? delay(stall)
-		: delay(stall);
+	// deno-lint-ignore ban-untagged-todo
+	// TODO - once retry works: no Timeout on first try
+	// const optionalTimeout = attemptNum === 0
+	// 	? delay(0)
+	// 	: delay(stall);
 
-	return optionalTimeout.then(() => {
-		return mongoSvc.getDbConnection().then((connDb) => {
+	return delay(stall)
+		.then(() => mongoSvc.getDbConnection())
+		.then((connDb) => {
 			console.log(
 				`Try #${attemptNum + 1} - ${
 					new Date().getTime()
@@ -53,7 +59,6 @@ const attemptDb = (
 
 			return connDb;
 		});
-	});
 };
 
 const waitForDb = (): Promise<void> => {
@@ -152,7 +157,28 @@ await waitForDb()
 
 		return serve(
 			(req) => {
-				return httpRequestHandler(req, mongoSvc);
+				console.log(
+					`handling request ${req.method} ${req.url}`,
+				);
+
+				const { pathname } = new URL(req.url);
+
+				if (pathname === '/graphql') {
+					return gqlHandler(req);
+				}
+
+				if (pathname === '/' && req.method === 'GET') {
+					return httpRequestHandler(req, mongoSvc, countSvc);
+				}
+
+				const responseBody = `Your user-agent is:\n\n`
+					.concat(
+						req.headers.get('user-agent') ?? 'Unknown',
+					);
+
+				const response = new Response(responseBody, { status: 200 });
+
+				return Promise.resolve(response);
 			},
 			{ port: PORT },
 		);
