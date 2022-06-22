@@ -1,7 +1,7 @@
 import { gql } from 'https://deno.land/x/graphql_tag@0.0.1/mod.ts';
 import { makeExecutableSchema } from 'https://deno.land/x/graphql_tools@0.0.2/schema/makeExecutableSchema.ts';
 import { CountServiceFactory } from './CountService.ts';
-import { GraphQLHTTP } from './http.ts';
+import { GraphQLHTTP } from './lightly-modified/http.ts';
 import type { IMongoService } from './types.d.ts';
 
 const resolvers = { Query: { hello: () => `Hello World!` } };
