@@ -14,28 +14,19 @@ export const executeHomePage = async (
 
 	const pages = await mongoSvc.fetchPages();
 
-	const headers = new Headers();
-	headers.set('content-type', 'text/html');
-
 	const text = JSON.stringify(pages, null, 4);
 
 	const response = new Response(
-		`<!DOCTYPE html>
-<html>
-	<head>
-		<title>Anthony&apos;s Deno World</title>
-	</head>
-	<body>
-		<h1>Welcome!</h1>
-		<a href="/graphql" target="_self" re>GraphQL Playground</a>
-		<h2>Page Analytics (from MongoDB)</h2>
-		<br/>
-		<textarea cols="80" rows="17">${text}</textarea>
-		</body>
-</html>
-`,
+		makeHtmlPage(
+			'Home',
+			`<h1>Welcome!</h1>
+<a href="/graphql" target="_self">GraphQL Playground</a>
+<h2>Page Analytics (from MongoDB)</h2>
+<br/>
+<textarea cols="80" rows="17">${text}</textarea>`,
+		),
 		{
-			headers,
+			headers: makeHeaders(),
 			status: 200,
 		},
 	);
@@ -44,12 +35,43 @@ export const executeHomePage = async (
 };
 
 export const executeNotFoundPage = (req: Request): Promise<Response> => {
-	const responseBody = `Your user-agent is:\n\n`
-		.concat(
-			req.headers.get('user-agent') ?? 'Unknown',
-		);
-
-	const response = new Response(responseBody, { status: 200 });
+	const response = new Response(
+		makeHtmlPage(
+			'Page Not Found',
+			`<h1>Page Not Found</h1>
+<a href="/" target="_self">Return Home</a>`,
+		),
+		{
+			headers: makeHeaders(),
+			status: 404,
+		},
+	);
 
 	return Promise.resolve(response);
+};
+
+const makeHeaders = (extraHeaders?: Record<string, string>): Headers => {
+	const headers = new Headers();
+	headers.set('content-type', 'text/html');
+
+	if (extraHeaders) {
+		Object.entries(extraHeaders).forEach(([headerName, headerValue]) => {
+			headers.set(headerName, headerValue);
+		});
+	}
+
+	return headers;
+};
+
+const makeHtmlPage = (title: string, content: string): string => {
+	return `<!DOCTYPE html>
+<html>
+	<head>
+		<title>Anthony&apos;s Deno World - ${title}</title>
+	</head>
+	<body>
+${content}
+	</body>
+</html>
+`;
 };
