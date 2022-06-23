@@ -3,9 +3,8 @@ import type { Database } from 'https://deno.land/x/mongo@v0.30.0/src/database.ts
 import { delay } from 'https://deno.land/std@0.140.0/async/delay.ts';
 import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
 // import { Timeout, TimeoutError } from 'https://deno.land/x/timeout/mod.ts';
-import { CountServiceFactory } from './services/CountService.ts';
-import { gqlHandler, httpRequestHandler } from './handlers.ts';
-import { MongoService } from './services/MongoService.ts';
+import { gqlHandler, httpRequestHandler } from './handlers/index.ts';
+import { CountServiceFactory, MongoService } from './services/index.ts';
 
 console.info('About to fire config() to load env vars');
 
