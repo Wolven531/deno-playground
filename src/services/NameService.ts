@@ -18,5 +18,3 @@ export const NameServiceFactory: (startingName?: string) => INameService = (
 		},
 	};
 };
-
-export default NameServiceFactory;
