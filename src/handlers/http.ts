@@ -17,20 +17,13 @@ export const executeHomePage = async (
 	const text = JSON.stringify(pages, null, 4);
 
 	const response = new Response(
-		`<!DOCTYPE html>
-<html>
-	<head>
-		<title>Anthony&apos;s Deno World</title>
-	</head>
-	<body>
-		<h1>Welcome!</h1>
-		<a href="/graphql" target="_self">GraphQL Playground</a>
-		<h2>Page Analytics (from MongoDB)</h2>
-		<br/>
-		<textarea cols="80" rows="17">${text}</textarea>
-	</body>
-</html>
-`,
+		makeHtmlPage(
+			`<h1>Welcome!</h1>
+<a href="/graphql" target="_self">GraphQL Playground</a>
+<h2>Page Analytics (from MongoDB)</h2>
+<br/>
+<textarea cols="80" rows="17">${text}</textarea>`,
+		),
 		{
 			headers: makeHeaders(),
 			status: 200,
@@ -42,17 +35,10 @@ export const executeHomePage = async (
 
 export const executeNotFoundPage = (req: Request): Promise<Response> => {
 	const response = new Response(
-		`<!DOCTYPE html>
-<html>
-	<head>
-		<title>Anthony&apos;s Deno World - Page Not Found</title>
-	</head>
-	<body>
-		<h1>Page Not Found</h1>
-		<a href="/" target="_self">Return Home</a>
-	</body>
-</html>
-`,
+		makeHtmlPage(
+			`<h1>Page Not Found</h1>
+<a href="/" target="_self">Return Home</a>`,
+		),
 		{
 			headers: makeHeaders(),
 			status: 404,
@@ -73,4 +59,17 @@ const makeHeaders = (extraHeaders?: Record<string, string>): Headers => {
 	}
 
 	return headers;
+};
+
+const makeHtmlPage = (content: string): string => {
+	return `<!DOCTYPE html>
+<html>
+	<head>
+		<title>Anthony&apos;s Deno World - Page Not Found</title>
+	</head>
+	<body>
+${content}
+	</body>
+</html>
+`;
 };
