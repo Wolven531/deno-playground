@@ -14,9 +14,6 @@ export const executeHomePage = async (
 
 	const pages = await mongoSvc.fetchPages();
 
-	const headers = new Headers();
-	headers.set('content-type', 'text/html');
-
 	const text = JSON.stringify(pages, null, 4);
 
 	const response = new Response(
@@ -35,7 +32,7 @@ export const executeHomePage = async (
 </html>
 `,
 		{
-			headers,
+			headers: makeHeaders(),
 			status: 200,
 		},
 	);
@@ -44,9 +41,6 @@ export const executeHomePage = async (
 };
 
 export const executeNotFoundPage = (req: Request): Promise<Response> => {
-	const headers = new Headers();
-	headers.set('content-type', 'text/html');
-
 	const response = new Response(
 		`<!DOCTYPE html>
 <html>
@@ -60,10 +54,23 @@ export const executeNotFoundPage = (req: Request): Promise<Response> => {
 </html>
 `,
 		{
-			headers,
+			headers: makeHeaders(),
 			status: 404,
 		},
 	);
 
 	return Promise.resolve(response);
+};
+
+const makeHeaders = (extraHeaders?: Record<string, string>): Headers => {
+	const headers = new Headers();
+	headers.set('content-type', 'text/html');
+
+	if (extraHeaders) {
+		Object.entries(extraHeaders).forEach(([headerName, headerValue]) => {
+			headers.set(headerName, headerValue);
+		});
+	}
+
+	return headers;
 };
