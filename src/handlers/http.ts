@@ -18,6 +18,7 @@ export const executeHomePage = async (
 
 	const response = new Response(
 		makeHtmlPage(
+			'Home',
 			`<h1>Welcome!</h1>
 <a href="/graphql" target="_self">GraphQL Playground</a>
 <h2>Page Analytics (from MongoDB)</h2>
@@ -36,6 +37,7 @@ export const executeHomePage = async (
 export const executeNotFoundPage = (req: Request): Promise<Response> => {
 	const response = new Response(
 		makeHtmlPage(
+			'Page Not Found',
 			`<h1>Page Not Found</h1>
 <a href="/" target="_self">Return Home</a>`,
 		),
@@ -61,11 +63,11 @@ const makeHeaders = (extraHeaders?: Record<string, string>): Headers => {
 	return headers;
 };
 
-const makeHtmlPage = (content: string): string => {
+const makeHtmlPage = (title: string, content: string): string => {
 	return `<!DOCTYPE html>
 <html>
 	<head>
-		<title>Anthony&apos;s Deno World - Page Not Found</title>
+		<title>Anthony&apos;s Deno World - ${title}</title>
 	</head>
 	<body>
 ${content}
