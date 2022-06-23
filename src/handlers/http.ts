@@ -27,11 +27,11 @@ export const executeHomePage = async (
 	</head>
 	<body>
 		<h1>Welcome!</h1>
-		<a href="/graphql" target="_self" re>GraphQL Playground</a>
+		<a href="/graphql" target="_self">GraphQL Playground</a>
 		<h2>Page Analytics (from MongoDB)</h2>
 		<br/>
 		<textarea cols="80" rows="17">${text}</textarea>
-		</body>
+	</body>
 </html>
 `,
 		{
@@ -44,15 +44,26 @@ export const executeHomePage = async (
 };
 
 export const executeNotFoundPage = (req: Request): Promise<Response> => {
-	// const responseBody = `Your user-agent is:\n\n`
-	// 	.concat(
-	// 		req.headers.get('user-agent') ?? 'Unknown',
-	// 	);
+	const headers = new Headers();
+	headers.set('content-type', 'text/html');
 
-	// const response = new Response(responseBody, { status: 200 });
-
-	// return Promise.resolve(response);
-	const response = new Response(null, { status: 404 });
+	const response = new Response(
+		`<!DOCTYPE html>
+<html>
+	<head>
+		<title>Anthony&apos;s Deno World - Page Not Found</title>
+	</head>
+	<body>
+		<h1>Page Not Found</h1>
+		<a href="/" target="_self">Return Home</a>
+	</body>
+</html>
+`,
+		{
+			headers,
+			status: 404,
+		},
+	);
 
 	return Promise.resolve(response);
 };
