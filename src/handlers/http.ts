@@ -44,12 +44,15 @@ export const executeHomePage = async (
 };
 
 export const executeNotFoundPage = (req: Request): Promise<Response> => {
-	const responseBody = `Your user-agent is:\n\n`
-		.concat(
-			req.headers.get('user-agent') ?? 'Unknown',
-		);
+	// const responseBody = `Your user-agent is:\n\n`
+	// 	.concat(
+	// 		req.headers.get('user-agent') ?? 'Unknown',
+	// 	);
 
-	const response = new Response(responseBody, { status: 200 });
+	// const response = new Response(responseBody, { status: 200 });
+
+	// return Promise.resolve(response);
+	const response = new Response(null, { status: 404 });
 
 	return Promise.resolve(response);
 };
