@@ -1,3 +1,5 @@
+// deno-lint-ignore-file
+
 // !!! all code below is from https://deno.land/x/gql@1.1.1/render.ts
 // except for pinned version import of xss
 
