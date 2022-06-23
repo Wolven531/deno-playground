@@ -1,4 +1,4 @@
-import type { ICountService } from './types.d.ts';
+import type { ICountService } from '../types.d.ts';
 
 /**
  * This function returns an instance of ICountService

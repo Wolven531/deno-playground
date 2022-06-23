@@ -1,6 +1,6 @@
 import { MongoClient } from 'https://deno.land/x/mongo@v0.30.0/src/client.ts';
 import type { Database } from 'https://deno.land/x/mongo@v0.30.0/src/database.ts';
-import type { IMongoService, IPage } from './types.d.ts';
+import type { IMongoService, IPage } from '../types.d.ts';
 
 export class MongoService implements IMongoService {
 	private client: MongoClient;

@@ -3,7 +3,8 @@ import {
 	assertExists,
 	fail,
 } from 'https://deno.land/std@0.140.0/testing/asserts.ts';
-import { INameService, NameServiceFactory } from '../src/NameService.ts';
+import { NameServiceFactory } from '../src/services/NameService.ts';
+import type { INameService } from '../src/types.d.ts';
 
 Deno.test('execute w/ default ctor', () => {
 	let svc: INameService;

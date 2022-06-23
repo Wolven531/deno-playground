@@ -3,7 +3,8 @@ import {
 	assertExists,
 	fail,
 } from 'https://deno.land/std@0.140.0/testing/asserts.ts';
-import { CountServiceFactory, ICountService } from '../src/CountService.ts';
+import { CountServiceFactory } from '../src/services/CountService.ts';
+import type { ICountService } from '../src/types.d.ts';
 
 Deno.test({
 	name: 'execute w/ default ctor',

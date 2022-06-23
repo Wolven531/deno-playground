@@ -1,4 +1,4 @@
-import type { INameService } from './types.d.ts';
+import type { INameService } from '../types.d.ts';
 
 /**
  * This function returns an instance of INameService
