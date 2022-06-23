@@ -1,6 +1,6 @@
 import type { ICountService, IMongoService } from '../types.d.ts';
 
-export const httpRequestHandler = async (
+export const executeHomePage = async (
 	request: Request,
 	mongoSvc: IMongoService,
 	countSvc: ICountService,
@@ -39,6 +39,17 @@ export const httpRequestHandler = async (
 			status: 200,
 		},
 	);
+
+	return Promise.resolve(response);
+};
+
+export const executeNotFoundPage = (req: Request): Promise<Response> => {
+	const responseBody = `Your user-agent is:\n\n`
+		.concat(
+			req.headers.get('user-agent') ?? 'Unknown',
+		);
+
+	const response = new Response(responseBody, { status: 200 });
 
 	return Promise.resolve(response);
 };

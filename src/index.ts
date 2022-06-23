@@ -3,10 +3,12 @@ import type { Database } from 'https://deno.land/x/mongo@v0.30.0/src/database.ts
 import { delay } from 'https://deno.land/std@0.140.0/async/delay.ts';
 import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
 // import { Timeout, TimeoutError } from 'https://deno.land/x/timeout/mod.ts';
-import { gqlHandler, httpRequestHandler } from './handlers/index.ts';
+import {
+	executeHomePage,
+	executeNotFoundPage,
+	gqlHandler,
+} from './handlers/index.ts';
 import { CountServiceFactory, MongoService } from './services/index.ts';
-
-console.info('About to fire config() to load env vars');
 
 try {
 	// !!! wrapped in try/catch - works locally, not using Deno Deploy
@@ -18,7 +20,7 @@ try {
 	});
 } catch (err) {
 	console.warn(
-		'Missing env vars',
+		'[index.ts] Missing env vars',
 		err,
 	);
 }
@@ -36,7 +38,7 @@ const attemptDb = (
 	stall: number,
 ): Promise<Database | null> => {
 	console.log(
-		`Try #${attemptNum + 1} - ${
+		`[attemptDb] Try #${attemptNum + 1} - ${
 			new Date().getTime()
 		} - About to attempt connection`,
 	);
@@ -51,7 +53,7 @@ const attemptDb = (
 		.then(() => mongoSvc.getDbConnection())
 		.then((connDb) => {
 			console.log(
-				`Try #${attemptNum + 1} - ${
+				`[attemptDb] Try #${attemptNum + 1} - ${
 					new Date().getTime()
 				} - Received DB connection`,
 			);
@@ -61,7 +63,7 @@ const attemptDb = (
 };
 
 const waitForDb = (): Promise<void> => {
-	console.log('Setting up mongo instance');
+	console.log('[waitForDb] Setting up mongo instance');
 
 	return new Promise<void>((resolve) => {
 		// deno-lint-ignore ban-untagged-todo
@@ -84,7 +86,7 @@ const waitForDb = (): Promise<void> => {
 			// })
 			.catch((err) => {
 				console.log(
-					`Try #${currentTry + 1} - ${
+					`[waitForDb] Try #${currentTry + 1} - ${
 						new Date().getTime()
 					} - Failed to connect, waiting ${stall} ms, then retrying`,
 					err,
@@ -151,40 +153,29 @@ const waitForDb = (): Promise<void> => {
 await waitForDb()
 	.then(() => {
 		console.log(
-			`Starting HTTP webserver; access it at http://localhost:${PORT}`,
+			`[index.ts] Starting HTTP webserver; access it at http://localhost:${PORT}`,
 		);
 
 		return serve(
 			(req) => {
 				console.log(
-					`handling request ${req.method} ${req.url}`,
+					`[index.ts] Handling request ${req.method} ${req.url}`,
 				);
 
 				const { pathname } = new URL(req.url);
 
-				if (pathname === '/graphql') {
-					return gqlHandler(req);
+				switch (pathname) {
+					case '/':
+						return executeHomePage(req, mongoSvc, countSvc);
+					case '/graphql':
+						return gqlHandler(req);
+					default:
+						return executeNotFoundPage(req);
 				}
-
-				if (pathname === '/' && req.method === 'GET') {
-					return httpRequestHandler(req, mongoSvc, countSvc);
-				}
-
-				const responseBody = `Your user-agent is:\n\n`
-					.concat(
-						req.headers.get('user-agent') ?? 'Unknown',
-					);
-
-				const response = new Response(responseBody, { status: 200 });
-
-				return Promise.resolve(response);
 			},
 			{ port: PORT },
 		);
 	})
-	.then(() => {
-		console.log('when does this happen?');
-	})
 	.catch((err) => {
-		console.warn('Top level DB error -', err);
+		console.warn('[index.ts] Top level error -', err);
 	});
