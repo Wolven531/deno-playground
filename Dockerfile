@@ -25,4 +25,4 @@ ADD . .
 # Compile the main app so that it doesn't need to be compiled each startup/entry
 RUN deno cache src/index.ts
 
-CMD ["run", "--allow-env", "--allow-net", "--allow-read", "--config", "deno.jsonc", "src/index.ts"]
+CMD ["run", "--allow-env", "--allow-net", "--allow-read", "--unstable", "--config", "deno.jsonc", "src/index.ts"]
