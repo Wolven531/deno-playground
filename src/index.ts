@@ -1,8 +1,8 @@
 import { config } from 'https://deno.land/x/dotenv@v3.2.0/mod.ts';
+// import { opine } from 'https://deno.land/x/opine@2.2.0/mod.ts';
 import type { Database } from 'https://deno.land/x/mongo@v0.30.0/src/database.ts';
 import { delay } from 'https://deno.land/std@0.140.0/async/delay.ts';
 import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
-// import { Timeout, TimeoutError } from 'https://deno.land/x/timeout/mod.ts';
 import {
 	executeHomePage,
 	executeNotFoundPage,
@@ -10,19 +10,21 @@ import {
 } from './handlers/index.ts';
 import { CountServiceFactory, MongoService } from './services/index.ts';
 
-try {
-	// !!! wrapped in try/catch - works locally, not using Deno Deploy
-	config({
-		allowEmptyValues: true,
-		export: true,
-		// Note that the safe option prevents startup w/o proper env config
-		// safe: true
-	});
-} catch (err) {
-	console.warn(
-		'[index.ts] Missing env vars',
-		err,
-	);
+if (Deno.env.get('DENO_ENV') === 'local') {
+	// !!! wrapped in if + try/catch - works locally, not using Deno Deploy
+	try {
+		config({
+			allowEmptyValues: true,
+			export: true,
+			// Note that the safe option prevents startup w/o proper env config
+			// safe: true
+		});
+	} catch (err) {
+		console.warn(
+			'[index.ts] Missing env vars',
+			err,
+		);
+	}
 }
 
 // env-related constants
@@ -152,9 +154,36 @@ const waitForDb = (): Promise<void> => {
 
 await waitForDb()
 	.then(() => {
+		const HOST = '0.0.0.0'; // default is '0.0.0.0'
+		const hostWin = 'localhost'; // Win browsers access '0.0.0.0' as 'localhost'
+
 		console.log(
-			`[index.ts] Starting HTTP webserver; access it at http://localhost:${PORT}`,
+			`[index.ts] Starting app; access it at http://${hostWin}:${PORT}`,
 		);
+
+		// const app = opine();
+
+		// app.get('/', (req, res, next) => {
+		// 	res.locals.title = 'Home';
+		// 	res.send('Hello World');
+		// });
+
+		// const server = app.listen(
+		// 	{
+		// 		hostname: HOST,
+		// 		port: PORT,
+		// 	},
+		// );
+
+		// console.log(
+		// 	'[index.ts] Server is available on '.concat(
+		// 		JSON.stringify(server.addrs, null, 2).replaceAll( // replacement for Win compat
+		// 			HOST,
+		// 			hostWin,
+		// 		),
+		// 		' 🚀',
+		// 	),
+		// );
 
 		return serve(
 			(req) => {
@@ -173,7 +202,10 @@ await waitForDb()
 						return executeNotFoundPage(req);
 				}
 			},
-			{ port: PORT },
+			{
+				hostname: HOST,
+				port: PORT,
+			},
 		);
 	})
 	.catch((err) => {
