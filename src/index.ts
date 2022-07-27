@@ -195,13 +195,13 @@ await waitForDb()
 
 				switch (pathname) {
 					case '/':
-						mongoSvc.addToPageCount('home');
-
-						return executeHomePage(req, mongoSvc, countSvc);
+						return mongoSvc.addToPageCount('home').then(() =>
+							executeHomePage(req, mongoSvc, countSvc)
+						);
 					case '/graphql':
-						mongoSvc.addToPageCount('gql-playground');
-
-						return gqlHandler(req);
+						return mongoSvc.addToPageCount('gql-playground').then(
+							() => gqlHandler(req),
+						);
 					default:
 						return executeNotFoundPage(req);
 				}
