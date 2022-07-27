@@ -40,9 +40,9 @@ const attemptDb = (
 	stall: number,
 ): Promise<Database | null> => {
 	console.log(
-		`[attemptDb] Try #${attemptNum + 1} - ${
-			new Date().getTime()
-		} - About to attempt connection`,
+		`[attemptDb] Try #${
+			attemptNum + 1
+		} - ${Date.now()} - About to attempt connection`,
 	);
 
 	// deno-lint-ignore ban-untagged-todo
@@ -55,9 +55,9 @@ const attemptDb = (
 		.then(() => mongoSvc.getDbConnection())
 		.then((connDb) => {
 			console.log(
-				`[attemptDb] Try #${attemptNum + 1} - ${
-					new Date().getTime()
-				} - Received DB connection`,
+				`[attemptDb] Try #${
+					attemptNum + 1
+				} - ${Date.now()} - Received DB connection`,
 			);
 
 			return connDb;
@@ -88,9 +88,9 @@ const waitForDb = (): Promise<void> => {
 			// })
 			.catch((err) => {
 				console.log(
-					`[waitForDb] Try #${currentTry + 1} - ${
-						new Date().getTime()
-					} - Failed to connect, waiting ${stall} ms, then retrying`,
+					`[waitForDb] Try #${
+						currentTry + 1
+					} - ${Date.now()} - Failed to connect, waiting ${stall} ms, then retrying`,
 					err,
 				);
 
@@ -104,7 +104,7 @@ const waitForDb = (): Promise<void> => {
 		// 	try {
 		// 		console.log(
 		// 			`Try #${retries + 1} - ${
-		// 				new Date().getTime()
+		// 				Date.now()
 		// 			} - About to attempt connection`,
 		// 		);
 
@@ -114,7 +114,7 @@ const waitForDb = (): Promise<void> => {
 
 		// 		console.log(
 		// 			`Try #${retries + 1} - ${
-		// 				new Date().getTime()
+		// 				Date.now()
 		// 			} - Failed to connect, waiting ${stallMillis} ms, then retrying`,
 		// 			err,
 		// 		);
@@ -124,7 +124,7 @@ const waitForDb = (): Promise<void> => {
 		// 		// await new Promise<void>((resolve) => {
 		// 		// 	setTimeout(() => {
 		// 		// 		console.log(
-		// 		// 			`${new Date().getTime()} - finished stall`,
+		// 		// 			`${Date.now()} - finished stall`,
 		// 		// 		);
 		// 		// 		resolve();
 		// 		// 	}, stallMillis);
