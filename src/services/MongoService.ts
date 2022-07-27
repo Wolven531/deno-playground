@@ -3,6 +3,8 @@ import type { Database } from 'https://deno.land/x/mongo@v0.30.0/src/database.ts
 import type { IMongoService, IPage } from '../types.d.ts';
 
 export class MongoService implements IMongoService {
+	private static COLLECTION_PAGES = 'pages';
+
 	private client: MongoClient;
 
 	constructor() {
@@ -17,7 +19,9 @@ export class MongoService implements IMongoService {
 				return;
 			}
 
-			const pagesCollection = db.collection<IPage>('pages');
+			const pagesCollection = db.collection<IPage>(
+				MongoService.COLLECTION_PAGES,
+			);
 
 			const results = await pagesCollection.updateOne({
 				'name': pageName,
@@ -45,7 +49,9 @@ export class MongoService implements IMongoService {
 				return [];
 			}
 
-			const pagesCollection = db.collection<IPage>('pages');
+			const pagesCollection = db.collection<IPage>(
+				MongoService.COLLECTION_PAGES,
+			);
 
 			const results = pagesCollection.find({});
 
