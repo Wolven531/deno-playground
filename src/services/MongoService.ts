@@ -9,6 +9,32 @@ export class MongoService implements IMongoService {
 		this.client = new MongoClient();
 	}
 
+	async addToPageCount(pageName: string): Promise<void> {
+		try {
+			const db = await this.getDbConnection();
+
+			if (db === null) {
+				return;
+			}
+
+			const pagesCollection = db.collection<IPage>('pages');
+
+			const results = await pagesCollection.updateOne({
+				'name': pageName,
+			}, {
+				$inc: { count: 1 },
+			});
+
+			console.info(
+				`Number of page documents updated - ${results.modifiedCount}`,
+			);
+		} catch (err) {
+			console.warn('Error incrementing page', err);
+		} finally {
+			this.client.close();
+		}
+	}
+
 	async fetchPages(): Promise<IPage[]> {
 		let pages: IPage[] = [];
 
