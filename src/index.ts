@@ -3,6 +3,7 @@ import { config } from 'https://deno.land/x/dotenv@v3.2.0/mod.ts';
 import type { Database } from 'https://deno.land/x/mongo@v0.30.0/src/database.ts';
 import { delay } from 'https://deno.land/std@0.140.0/async/delay.ts';
 import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
+import { readAllSync } from 'https://deno.land/std@0.140.0/streams/mod.ts';
 import {
 	executeHomePage,
 	executeNotFoundPage,
@@ -198,6 +199,23 @@ await waitForDb()
 						return mongoSvc.addToPageCount('home').then(() =>
 							executeHomePage(req, mongoSvc, countSvc)
 						);
+					case '/favicon.ico': {
+						const headers = new Headers();
+						headers.set('content-type', 'image/x-icon');
+						// headers.set('content-type', 'image/png');
+
+						const file = Deno.openSync('favicon.ico', {
+							read: true,
+						});
+						const faviconData = readAllSync(file);
+
+						Deno.close(file.rid);
+
+						return new Response(faviconData, {
+							headers,
+							status: 200,
+						});
+					}
 					case '/graphql':
 						return mongoSvc.addToPageCount('gql-playground').then(
 							() => gqlHandler(req),
